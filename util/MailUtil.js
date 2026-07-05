@@ -3,7 +3,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 console.log("EMAIL =", process.env.EMAIL);
-console.log("APP_PASS =", process.env.APP_PASS);
+
+// console.log("APP_PASS =", process.env.APP_PASS);
+console.log("APP_PASS =", process.env.APP_PASS ? "Loaded ✅" : "Missing ❌");
 
 const transporter = nodemailer.createTransport({
     service:"Gmail",
@@ -19,10 +21,11 @@ const sendMail = async(to,subject,text)=>{
             from:process.env.EMAIL,
             to,
             subject,
-            text
+            text,
+            html
         })
         console.log("Email sent:", info.response);
-
+        return info;
     }catch(error){
         console.error("Error sending email:", error);
         throw error
@@ -32,5 +35,5 @@ const sendMail = async(to,subject,text)=>{
 
 
 module.exports = {
-    sendMail,
-}
+    sendMail
+};
